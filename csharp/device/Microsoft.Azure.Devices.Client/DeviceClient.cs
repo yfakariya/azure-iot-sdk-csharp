@@ -143,11 +143,12 @@ TODO: revisit DefaultDelegatingHandler - it seems redundant as long as we have t
 
             var pipelineContext = new PipelineContext();
             pipelineContext.Set(iotHubConnectionString);
+            pipelineContext.Set(new Http1TransportSettings());
 
             IDeviceClientPipelineBuilder pipelineBuilder = new DeviceClientPipelineBuilder()
                 .With(ctx => new GateKeeperDelegatingHandler(ctx))
                 .With(ctx => new ErrorDelegatingHandler(ctx))
-                .With(ctx => new HttpTransportHandler(ctx, ctx.Get<IotHubConnectionString>(), ctx.Get<ITransportSettings>() as Http1TransportSettings));
+                .With(ctx => new HttpTransportHandler(ctx, ctx.Get<IotHubConnectionString>(), ctx.Get<Http1TransportSettings>()));
 
             this.InnerHandler = pipelineBuilder.Build(pipelineContext);
         }
