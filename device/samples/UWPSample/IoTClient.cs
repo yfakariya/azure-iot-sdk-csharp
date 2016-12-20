@@ -17,11 +17,13 @@ namespace Microsoft.Azure.Devices.Client.Samples
         //  "HostName=<iothub_host_name>;CredentialType=SharedAccessSignature;DeviceId=<device_id>;SharedAccessSignature=SharedAccessSignature sr=<iot_host>/devices/<device_id>&sig=<token>&se=<expiry_time>";
         private const string DeviceConnectionString = "<replace>";
 
+        private static TransportType protocol = TransportType.Mqtt;
+
         public async static Task Start()
         {
             try
             {
-                DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(DeviceConnectionString, TransportType.Http1);
+                DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(DeviceConnectionString, protocol);
 
                 await SendEvent(deviceClient);
                 await ReceiveCommands(deviceClient);
@@ -42,7 +44,7 @@ namespace Microsoft.Azure.Devices.Client.Samples
 
             for (int count = 0; count < MESSAGE_COUNT; count++)
             {
-                dataBuffer = string.Format("Msg from UWP: {0}_{1}", count, Guid.NewGuid().ToString());
+                dataBuffer = string.Format("Msg from UWP: Message {0} sent at {1} using {2} protocol", count, DateTime.Now.ToLocalTime(), protocol);
                 Message eventMessage = new Message(Encoding.UTF8.GetBytes(dataBuffer));
                 Debug.WriteLine("\t{0}> Sending message: {1}, Data: [{2}]", DateTime.Now.ToLocalTime(), count, dataBuffer);
 
