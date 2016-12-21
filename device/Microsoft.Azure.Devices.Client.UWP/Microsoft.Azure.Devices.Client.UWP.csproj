@@ -123,12 +123,69 @@
     <Compile Include="$(DeviceClientDir)\Common\Api\IotHubApiResources.cs" />
     <Compile Include="$(DeviceClientDir)\Common\IOThreadScheduler.cs" />
     <Compile Include="$(DeviceClientDir)\Common\IOThreadTimerSlim.cs" />
+    <Compile Include="$(DeviceClientDir)\Common\ReadOnlyMergeDictionary.cs" />
+    <Compile Include="$(DeviceClientDir)\Common\UrlEncodedDictionarySerializer.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ChannelMessageProcessingException.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ClientWebSocketChannel.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ClientWebSocketChannelConfig.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ConcurrentObjectPool.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ICancellable.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ISessionContextProvider.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\IWillMessage.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\MqttIotHubAdapter.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\MqttIotHubAdapterFactory.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\MqttTransportHandler.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\MqttTransportSettings.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\OrderedTwoPhaseWorkQueue.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\PublishWorkItem.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ReadOnlyByteBufferStream.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\ReferenceCountedObjectContainer.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\RouteDestinationType.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\SessionContextProvider.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\SimpleWorkQueue.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\StreamSocketChannel.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\TransientErrorIgnoreStrategy.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\Util.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\Mqtt\WillMessage.cs" />
+    <Compile Include="$(DeviceClientDir)\Transport\WebSocketConstants.cs" />
     <Compile Include="$(DeviceClientDir)\UWPHelpers.cs" />
     <Compile Include="$(DeviceClientDir)\UWPResources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="Resources.resw" />
+  </ItemGroup>
+  <!-- DotNetty dependencies -->
+  <PropertyGroup>
+    <DotNettyDirRoot>E:\git_projects\arturl-dotnetty\src</DotNettyDirRoot>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DotNetty.Common">
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Common\bin\$(Configuration)\netstandard1.3\DotNetty.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetty.Codecs">
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Codecs\bin\$(Configuration)\netstandard1.3\DotNetty.Codecs.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetty.Codecs.Mqtt">
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Codecs.Mqtt\bin\$(Configuration)\netstandard1.3\DotNetty.Codecs.Mqtt.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetty.Buffers">
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Buffers\bin\$(Configuration)\netstandard1.3\DotNetty.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetty.Codecs">
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Codecs\bin\$(Configuration)\netstandard1.3\DotNetty.Codecs.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetty.Transport">
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Transport\bin\$(Configuration)\netstandard1.3\DotNetty.Transport.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetty.Handlers">
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Handlers\bin\$(Configuration)\netstandard1.3\DotNetty.Handlers.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetty.Platform.UWP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(DotNettyDirRoot)\DotNetty.Platform.UWP\bin\Debug\DotNetty.Platform.UWP.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\shared\Microsoft.Azure.Devices.Shared.UWP\Microsoft.Azure.Devices.Shared.UWP.csproj">

@@ -379,17 +379,7 @@ namespace Microsoft.Azure.Devices.Client
         protected static AmqpLinkSettings SetLinkSettingsCommonProperties(AmqpLinkSettings linkSettings, TimeSpan timeSpan)
         {
             linkSettings.AddProperty(IotHubAmqpProperty.TimeoutName, timeSpan.TotalMilliseconds);
-#if WINDOWS_UWP
-            // System.Reflection.Assembly.GetExecutingAssembly() does not exist for UWP, therefore use a hard-coded version name
-            // (This string is picked up by the bump_version script, so don't change the line below)
-            var UWPAssemblyVersion = "1.1.4";
-            linkSettings.AddProperty(IotHubAmqpProperty.ClientVersion, UWPAssemblyVersion);
-#elif PCL
-            string PCLAssemblyVersion = "Microsoft.Azure.Devices.Client/1.0.22";
-            linkSettings.AddProperty(IotHubAmqpProperty.ClientVersion, PCLAssemblyVersion);
-#else
             linkSettings.AddProperty(IotHubAmqpProperty.ClientVersion, Utils.GetClientVersion());
-#endif
             return linkSettings;
         }
 
