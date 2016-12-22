@@ -28,7 +28,6 @@ namespace Microsoft.Azure.Devices.Client.Test.UWP
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
 
