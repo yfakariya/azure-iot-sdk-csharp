@@ -79,11 +79,10 @@
   "libraries": {
     "Newtonsoft.Json/6.0.8": {
       "sha512": "7ut47NDedTW19EbL0JpFDYUP62fcuz27hJrehCDNajdCS5NtqL+E39+7Um3OkNc2wl2ym7K8Ln5eNuLus6mVGQ==",
-      "type": "Package",
+      "type": "package",
       "files": [
+        "Newtonsoft.Json.6.0.8.nupkg.sha512",
         "Newtonsoft.Json.nuspec",
-        "[Content_Types].xml",
-        "_rels/.rels",
         "lib/net20/Newtonsoft.Json.dll",
         "lib/net20/Newtonsoft.Json.xml",
         "lib/net35/Newtonsoft.Json.dll",
@@ -98,7 +97,6 @@
         "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81+aspnetcore50/Newtonsoft.Json.xml",
-        "package/services/metadata/core-properties/d6cceb7474b245aab29598e10c6e65d6.psmdcp",
         "tools/install.ps1"
       ]
     },
@@ -180,19 +178,17 @@
     },
     "Validation/2.2.8": {
       "sha512": "DMNc7JhPlgRwnR+NNb+ldoluObL+RBw96aMoiZae/Looa4vgaAnIysmle/bV2OKqDNW9oUBDckPyfa2+sX6JdA==",
-      "type": "Package",
+      "type": "package",
       "files": [
         "README.md",
+        "Validation.2.2.8.nupkg.sha512",
         "Validation.nuspec",
-        "[Content_Types].xml",
-        "_rels/.rels",
         "lib/dotnet/Validation.dll",
         "lib/dotnet/Validation.xml",
         "lib/portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/Validation.dll",
         "lib/portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/Validation.xml",
         "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/Validation.dll",
         "lib/portable-net45+dnxcore50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10/Validation.xml",
-        "package/services/metadata/core-properties/003a6ace22864119891d2dfb824fb274.psmdcp",
         "tools/2013/RequiresNotNull.snippet",
         "tools/2013/RequiresNotNullOrEmpty.snippet",
         "tools/2015/RequiresNotNull.snippet",

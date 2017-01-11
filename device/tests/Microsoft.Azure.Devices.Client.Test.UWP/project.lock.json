@@ -12252,7 +12252,6 @@
     "Microsoft.NETCore.Runtime.CoreCLR-arm/1.0.0": {
       "sha512": "hoJfIl981eXwn9Tz8onO/J1xaYApIfp/YrhjSh9rRhml1U5Wj80LBgyp/6n+KI3VlvcAraThhnHnCTp+M3Uh+w==",
       "type": "package",
-      "path": "Microsoft.NETCore.Runtime.CoreCLR-arm/1.0.0",
       "files": [
         "Microsoft.NETCore.Runtime.CoreCLR-arm.1.0.0.nupkg.sha512",
         "Microsoft.NETCore.Runtime.CoreCLR-arm.nuspec",
@@ -15343,7 +15342,6 @@
     "Validation/2.2.8": {
       "sha512": "DMNc7JhPlgRwnR+NNb+ldoluObL+RBw96aMoiZae/Looa4vgaAnIysmle/bV2OKqDNW9oUBDckPyfa2+sX6JdA==",
       "type": "package",
-      "path": "Validation/2.2.8",
       "files": [
         "README.md",
         "Validation.2.2.8.nupkg.sha512",
