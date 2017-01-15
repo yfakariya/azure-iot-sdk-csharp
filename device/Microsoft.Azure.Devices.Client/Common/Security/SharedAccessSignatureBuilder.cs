@@ -147,7 +147,7 @@ namespace Microsoft.Azure.Devices.Client
             return Convert.ToBase64String(hmac);
         }
 #else
-        static string Sign(string requestString, string key)
+        internal static string Sign(string requestString, string key)
         {
 #if !NETSTANDARD1_3
             var algorithm = WinRTCrypto.MacAlgorithmProvider.OpenAlgorithm(MacAlgorithm.HmacSha256);
@@ -156,17 +156,12 @@ namespace Microsoft.Azure.Devices.Client
             var mac = hash.GetValueAndReset();
             return Convert.ToBase64String(mac);
 #else
-            using (var buffer = new MemoryStream())
             using (var algorithm = new HMACSHA256(Convert.FromBase64String(key)))
             {
-                var bytes = Encoding.UTF8.GetBytes(requestString);
-                var hash = algorithm.ComputeHash(bytes);
-                buffer.Write(hash, 0, hash.Length);
-                buffer.Write(bytes, 0, bytes.Length);
-                return Convert.ToBase64String(buffer.ToArray());
+                return Convert.ToBase64String(algorithm.ComputeHash(Encoding.UTF8.GetBytes(requestString)));
             }
 #endif
-        }
+		}
 #endif
-    }
+	}
 }
