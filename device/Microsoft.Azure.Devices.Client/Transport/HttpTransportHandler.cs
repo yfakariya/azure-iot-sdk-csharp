@@ -19,7 +19,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
     using Microsoft.Azure.Devices.Shared;
     using Newtonsoft.Json;
 
-#if !WINDOWS_UWP && !PCL
+#if !WINDOWS_UWP && !PCL && !NETSTANDARD1_3
     using Microsoft.WindowsAzure.Storage.Blob;
 #endif
 
@@ -92,7 +92,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
         }
 #endif
 
-        private Task HandleTimeoutCancellation(Func<Task> func, CancellationToken token)
+        protected override Task HandleTimeoutCancellation(Func<Task> func, CancellationToken token)
         {
             var tcs = new TaskCompletionSource<bool>();
 
@@ -201,7 +201,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
             }
         }
 
-#if !WINDOWS_UWP && !PCL
+#if !WINDOWS_UWP && !PCL&& !NETSTANDARD1_3
         internal async Task UploadToBlobAsync(String blobName, System.IO.Stream source)
         {
             var fileUploadRequest = new FileUploadRequest()

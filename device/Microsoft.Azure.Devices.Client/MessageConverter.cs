@@ -346,7 +346,7 @@ namespace Microsoft.Azure.Devices.Client
                 memoryStream.Write(readBuffer, 0, bytesRead);
             }
 
-#if WINDOWS_UWP
+#if WINDOWS_UWP || NETSTANDARD1_3
             // UWP doesn't have GetBuffer. ToArray creates a copy -- make sure perf impact is acceptable
             return new ArraySegment<byte>(memoryStream.ToArray(), 0, (int)memoryStream.Length);
 #else

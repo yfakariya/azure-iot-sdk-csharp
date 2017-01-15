@@ -22,7 +22,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
             return this.ReceiveAsync(this.TransportSettings.DefaultReceiveTimeout, cancellationToken);
         }
 
-        protected Task HandleTimeoutCancellation(Func<Task> func, CancellationToken token)
+        protected virtual Task HandleTimeoutCancellation(Func<Task> func, CancellationToken token)
         {
             CancellationTokenRegistration ctr = token.Register(() => this.CloseAsync());
 

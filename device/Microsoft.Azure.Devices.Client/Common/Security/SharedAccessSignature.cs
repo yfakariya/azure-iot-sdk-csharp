@@ -8,9 +8,14 @@ namespace Microsoft.Azure.Devices.Client
     using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
+#if !NETSTANDARD1_3
     using PCLCrypto;
+#else
+    using System.IO;
+    using System.Security.Cryptography;
+#endif
 
-    sealed class SharedAccessSignature : ISharedAccessSignatureCredential
+	sealed class SharedAccessSignature : ISharedAccessSignatureCredential
     {
         readonly string iotHubName;
         readonly string signature;
@@ -199,14 +204,26 @@ namespace Microsoft.Azure.Devices.Client
             fields.Add(this.encodedAudience);
             fields.Add(this.expiry);
             string value = string.Join("\n", fields);
+#if !NETSTANDARD1_3
             var algorithm = WinRTCrypto.MacAlgorithmProvider.OpenAlgorithm(MacAlgorithm.HmacSha256);
             var hash = algorithm.CreateHash(key);
             hash.Append(Encoding.UTF8.GetBytes(value));
             var mac = hash.GetValueAndReset();
             return Convert.ToBase64String(mac);
-        }
+#else
+            using (var buffer = new MemoryStream())
+            using (var algorithm = new HMACSHA256(key))
+            {
+                var bytes = Encoding.UTF8.GetBytes(value);
+                var hash = algorithm.ComputeHash(bytes);
+                buffer.Write(hash, 0, hash.Length);
+                buffer.Write(bytes, 0, bytes.Length);
+                return Convert.ToBase64String(buffer.ToArray());
+            }
+#endif
+		}
 
-        static IDictionary<string, string> ExtractFieldValues(string sharedAccessSignature)
+		static IDictionary<string, string> ExtractFieldValues(string sharedAccessSignature)
         {
             string[] lines = sharedAccessSignature.Split();
 
