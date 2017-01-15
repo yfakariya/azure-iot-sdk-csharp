@@ -177,7 +177,11 @@ namespace Microsoft.Azure.Devices.Client.Test
 
             //assert
             Assert.AreEqual(callCount, 1);
+#if !NUNIT
             Assert.ReferenceEquals(myPatch, receivedPatch);
+#else
+            Assert.That(receivedPatch, Is.SameAs(myPatch));
+#endif
         }
     }
 }

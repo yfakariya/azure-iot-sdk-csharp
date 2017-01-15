@@ -152,7 +152,7 @@ namespace Microsoft.Azure.Devices.Client.Test
         public void TransportSettingsTest_ZeroOperationTimeout()
         {
             var amqpConnectionPoolSettings = new AmqpConnectionPoolSettings();
-            var transportSetting = new AmqpTransportSettings(TransportType.Amqp, 200, amqpConnectionPoolSettings);
+            var transportSetting = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only, 200, amqpConnectionPoolSettings);
 #if NUNIT
             Assert.Throws<ArgumentOutOfRangeException>(() => {
 #endif 
@@ -171,7 +171,7 @@ namespace Microsoft.Azure.Devices.Client.Test
         public void TransportSettingsTest_ZeroOpenTimeout()
         {
             var amqpConnectionPoolSettings = new AmqpConnectionPoolSettings();
-            var transportSetting = new AmqpTransportSettings(TransportType.Amqp, 200, amqpConnectionPoolSettings);
+            var transportSetting = new AmqpTransportSettings(TransportType.Amqp_Tcp_Only, 200, amqpConnectionPoolSettings);
 #if NUNIT
             Assert.Throws<ArgumentOutOfRangeException>(() => {
 #endif 
