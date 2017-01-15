@@ -20,6 +20,7 @@ namespace Microsoft.Azure.Devices.Client
 #pragma warning suppress 56523 // function has no error return value
 #pragma warning restore 1634
                 UnsafeNativeMethods.GetSystemTimeAsFileTime(out time);
+                return time;
 #else
                 return DateTime.UtcNow.ToFileTimeUtc();
 #endif

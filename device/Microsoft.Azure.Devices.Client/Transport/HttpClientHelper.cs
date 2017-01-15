@@ -21,7 +21,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
 #if !NETSTANDARD1_3
     using System.Net.Http.Formatting;
 #else
-	using System.Text;
+    using System.Text;
     using Newtonsoft.Json;
 #endif
     using System.Security.Cryptography.X509Certificates;
@@ -525,6 +525,7 @@ namespace Microsoft.Azure.Devices.Client.Transport
             }
         }
 
+#if !WINDOWS_UWP && !PCL
 #if !NETSTANDARD1_3
         private static ObjectContent<T> CreateContent<T>(T entity)
         {
@@ -551,5 +552,6 @@ namespace Microsoft.Azure.Devices.Client.Transport
             }
         }
 #endif
-	}
+#endif
+    }
 }
