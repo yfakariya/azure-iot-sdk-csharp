@@ -9,7 +9,9 @@ namespace Microsoft.Azure.Devices.Client
     using System.Threading.Tasks;
 
 #if !WINDOWS_UWP
+#if !NETSTANDARD1_3
     using System.Configuration;
+#endif
     using System.Net.WebSockets;
     using System.Security.Cryptography.X509Certificates;
 #endif
@@ -206,7 +208,7 @@ namespace Microsoft.Azure.Devices.Client
 
         protected static bool InitializeDisableServerCertificateValidation()
         {
-#if !WINDOWS_UWP // No System.Configuration.ConfigurationManager in UWP
+#if !WINDOWS_UWP && !NETSTANDARD1_3 // No System.Configuration.ConfigurationManager in UWP
             string value = ConfigurationManager.AppSettings[DisableServerCertificateValidationKeyName];
             if (!string.IsNullOrEmpty(value))
             {
@@ -305,6 +307,7 @@ namespace Microsoft.Azure.Devices.Client
             websocket.Options.AddSubProtocol(WebSocketConstants.SubProtocols.Amqpwsb10);
 
             // Check if we're configured to use a proxy server
+#if !NETSTANDARD1_3
             IWebProxy webProxy = WebRequest.DefaultWebProxy;
             Uri proxyAddress = webProxy != null ? webProxy.GetProxy(websocketUri) : null;
             if (!websocketUri.Equals(proxyAddress))
@@ -312,15 +315,25 @@ namespace Microsoft.Azure.Devices.Client
                 // Configure proxy server
                 websocket.Options.Proxy = webProxy;
             }
+#else
+            var httpsProxy = Environment.GetEnvironmentVariable("HTTPS_PROXY");
+            if (!String.IsNullOrWhiteSpace(httpsProxy))
+            {
+                // Configure proxy server
+                websocket.Options.Proxy = new EnvironmentWebProxy(new Uri(httpsProxy));
+            }
+#endif
 
             if (this.AmqpTransportSettings.ClientCertificate != null)
             {
                 websocket.Options.ClientCertificates.Add(this.AmqpTransportSettings.ClientCertificate);
             }
+#if !NETSTANDARD1_3
             else
             {
                 websocket.Options.UseDefaultCredentials = true;
             }
+#endif
 
             using (var cancellationTokenSource = new CancellationTokenSource(timeout))
             {
@@ -336,6 +349,7 @@ namespace Microsoft.Azure.Devices.Client
             Uri websocketUri = new Uri(WebSocketConstants.Scheme + this.hostName + ":" + WebSocketConstants.SecurePort + WebSocketConstants.UriSuffix);
 
             // Use Legacy WebSocket if it is running on Windows 7 or older. Windows 7/Windows 2008 R2 is version 6.1
+#if !NETSTANDARD1_3
             if (Environment.OSVersion.Version.Major < 6 || (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor <= 1))
             {
                 var websocket = await CreateLegacyClientWebSocketAsync(websocketUri, this.AmqpTransportSettings.ClientCertificate, timeoutHelper.RemainingTime());
@@ -347,12 +361,15 @@ namespace Microsoft.Azure.Devices.Client
             }
             else
             {
+#endif
                 var websocket = await this.CreateClientWebSocketAsync(websocketUri, timeoutHelper.RemainingTime());
                 return new ClientWebSocketTransport(
                     websocket,
                     null,
                     null);
+#if !NETSTANDARD1_3
             }
+#endif
         }
 
         static async Task<IotHubClientWebSocket> CreateLegacyClientWebSocketAsync(Uri webSocketUri, X509Certificate2 clientCertificate, TimeSpan timeout)
@@ -363,7 +380,7 @@ namespace Microsoft.Azure.Devices.Client
         }
 #endif
 
-        static AmqpSettings CreateAmqpSettings()
+            static AmqpSettings CreateAmqpSettings()
         {
             var amqpSettings = new AmqpSettings();
 

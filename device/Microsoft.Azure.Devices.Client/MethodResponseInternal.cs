@@ -99,17 +99,17 @@ namespace Microsoft.Azure.Devices.Client
             }
         }
 
-        /// <summary>
-        /// Constructor which uses the input byte array as the body
-        /// </summary>
-        /// <param name="byteArray">a byte array which will be used to form the body stream</param>
-        /// <param name="requestId">the method request id corresponding to this respond</param>
-        /// <param name="status">the status code of the method call</param>
-#if NETMF
-        internal MethodResponse(byte[] byteArray)
+		/// <summary>
+		/// Constructor which uses the input byte array as the body
+		/// </summary>
+		/// <param name="byteArray">a byte array which will be used to form the body stream</param>
+		/// <param name="requestId">the method request id corresponding to this respond</param>
+		/// <param name="status">the status code of the method call</param>
+#if NETMF || NETSTANDARD1_3
+        internal MethodResponseInternal(byte[] byteArray, string requestId, int status)
             : this(new MemoryStream(byteArray))
 #else
-        internal MethodResponseInternal([System.Runtime.InteropServices.WindowsRuntime.ReadOnlyArrayAttribute] byte[] byteArray, string requestId, int status)
+		internal MethodResponseInternal([System.Runtime.InteropServices.WindowsRuntime.ReadOnlyArrayAttribute] byte[] byteArray, string requestId, int status)
             : this(new MemoryStream(byteArray))
 #endif
         {

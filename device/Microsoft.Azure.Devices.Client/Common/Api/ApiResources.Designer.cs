@@ -10,6 +10,7 @@
 
 namespace Microsoft.Azure.Devices.Client.Common.Api {
     using System;
+    using System.Reflection;
     
     
     /// <summary>
@@ -39,7 +40,7 @@ namespace Microsoft.Azure.Devices.Client.Common.Api {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Azure.Devices.Client.Common.Api.ApiResources", typeof(ApiResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Microsoft.Azure.Devices.Client.Common.Api.ApiResources", typeof(ApiResources).GetTypeInfo().Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -122,7 +122,11 @@ namespace Microsoft.Azure.Devices.Client.Transport.Mqtt
             this.mqttIotHubAdapterFactory = new MqttIotHubAdapterFactory(settings);
             this.messageQueue = new ConcurrentQueue<Message>();
             this.completionQueue = new Queue<string>();
+#if !NETSTANDARD1_3
             this.serverAddress = Dns.GetHostEntry(iotHubConnectionString.HostName).AddressList[0];
+#else
+            this.serverAddress = Dns.GetHostEntryAsync(iotHubConnectionString.HostName).ConfigureAwait(false).GetAwaiter().GetResult().AddressList[0];
+#endif
             this.qos = settings.PublishToServerQoS;
             this.eventLoopGroupKey = iotHubConnectionString.IotHubName + "#" + iotHubConnectionString.DeviceId + "#" + iotHubConnectionString.Audience;
 
@@ -810,6 +814,7 @@ namespace Microsoft.Azure.Devices.Client.Transport.Mqtt
                 websocket.Options.AddSubProtocol(WebSocketConstants.SubProtocols.Mqtt);
 
                 // Check if we're configured to use a proxy server
+#if !NETSTANDARD1_3
                 IWebProxy webProxy = WebRequest.DefaultWebProxy;
                 Uri proxyAddress = webProxy?.GetProxy(websocketUri);
                 if (!websocketUri.Equals(proxyAddress))
@@ -817,15 +822,25 @@ namespace Microsoft.Azure.Devices.Client.Transport.Mqtt
                     // Configure proxy server
                     websocket.Options.Proxy = webProxy;
                 }
+#else
+                var httpsProxy = Environment.GetEnvironmentVariable("HTTPS_PROXY");
+                if (!String.IsNullOrWhiteSpace(httpsProxy))
+                {
+                    // Configure proxy server
+                    websocket.Options.Proxy = new EnvironmentWebProxy(new Uri(httpsProxy));
+                }
+#endif
 
                 if (settings.ClientCertificate != null)
                 {
                     websocket.Options.ClientCertificates.Add(settings.ClientCertificate);
                 }
+#if !NETSTANDARD1_3
                 else
                 {
                     websocket.Options.UseDefaultCredentials = true;
                 }
+#endif
 
                 using (var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromMinutes(1)))
                 {

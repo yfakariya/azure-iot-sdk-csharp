@@ -8,7 +8,12 @@ namespace Microsoft.Azure.Devices.Client
     using System.Collections.Generic;
     using System.Globalization;
     using System.Text;
+#if !NETSTANDARD1_3
     using PCLCrypto;
+#else
+    using System.IO;
+    using System.Security.Cryptography;
+#endif
 
     sealed class SharedAccessSignature : ISharedAccessSignatureCredential
     {
@@ -199,14 +204,26 @@ namespace Microsoft.Azure.Devices.Client
             fields.Add(this.encodedAudience);
             fields.Add(this.expiry);
             string value = string.Join("\n", fields);
+            return Sign(key, value);
+        }
+
+        internal static string Sign(byte[] key, string value)
+        {
+#if !NETSTANDARD1_3
             var algorithm = WinRTCrypto.MacAlgorithmProvider.OpenAlgorithm(MacAlgorithm.HmacSha256);
             var hash = algorithm.CreateHash(key);
             hash.Append(Encoding.UTF8.GetBytes(value));
             var mac = hash.GetValueAndReset();
             return Convert.ToBase64String(mac);
-        }
+#else
+            using (var algorithm = new HMACSHA256(key))
+            {
+                return Convert.ToBase64String(algorithm.ComputeHash(Encoding.UTF8.GetBytes(value)));
+            }
+#endif
+		}
 
-        static IDictionary<string, string> ExtractFieldValues(string sharedAccessSignature)
+		static IDictionary<string, string> ExtractFieldValues(string sharedAccessSignature)
         {
             string[] lines = sharedAccessSignature.Split();
 

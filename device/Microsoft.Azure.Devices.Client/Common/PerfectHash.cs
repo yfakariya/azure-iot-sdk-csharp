@@ -16,6 +16,8 @@ namespace Microsoft.Azure.Devices.Common.Cloud
 
 #if WINDOWS_UWP
             PerfectHash.ComputeHash(ASCIIEncoding.ASCII.GetBytes(data.ToUpper()), seed1: 0, seed2: 0, hash1: out hash1, hash2: out hash2);
+#elif NETSTANDARD1_3
+            PerfectHash.ComputeHash(ASCIIEncoding.ASCII.GetBytes(data.ToUpperInvariant()), seed1: 0, seed2: 0, hash1: out hash1, hash2: out hash2);
 #else
             PerfectHash.ComputeHash(ASCIIEncoding.ASCII.GetBytes(data.ToUpper(CultureInfo.InvariantCulture)), seed1: 0, seed2: 0, hash1: out hash1, hash2: out hash2);
 #endif
@@ -31,6 +33,8 @@ namespace Microsoft.Azure.Devices.Common.Cloud
 
 #if WINDOWS_UWP
             ComputeHash(ASCIIEncoding.ASCII.GetBytes(data.ToUpper()), seed1: 0, seed2: 0, hash1: out hash1, hash2: out hash2);
+#elif NETSTANDARD1_3
+            ComputeHash(ASCIIEncoding.ASCII.GetBytes(data.ToUpperInvariant()), seed1: 0, seed2: 0, hash1: out hash1, hash2: out hash2);
 #else
             ComputeHash(ASCIIEncoding.ASCII.GetBytes(data.ToUpper(CultureInfo.InvariantCulture)), seed1: 0, seed2: 0, hash1: out hash1, hash2: out hash2);
 #endif

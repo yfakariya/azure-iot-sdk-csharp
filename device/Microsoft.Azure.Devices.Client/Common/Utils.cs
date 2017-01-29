@@ -58,8 +58,13 @@ namespace Microsoft.Azure.Devices.Client
 #if !WINDOWS_UWP // GetExecutingAssembly is not in UWP
         public static string GetClientVersion()
         {
+#if !NETSTANDARD1_3
             Assembly a = Assembly.GetExecutingAssembly();
             var attribute = (AssemblyInformationalVersionAttribute)a.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)[0];
+#else
+            Assembly a = typeof(Utils).GetTypeInfo().Assembly;
+            var attribute = a.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+#endif
             return a.GetName().Name + "/" + attribute.InformationalVersion;
         }
 #endif
