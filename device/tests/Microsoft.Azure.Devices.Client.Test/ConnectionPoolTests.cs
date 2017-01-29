@@ -7,7 +7,18 @@ namespace Microsoft.Azure.Devices.Client.Test
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Azure.Devices.Client;
+    using Microsoft.Azure.Devices.Client;
+#if !NUNIT
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+#else
+    using NUnit.Framework;
+    using TestClassAttribute = NUnit.Framework.TestFixtureAttribute;
+    using TestMethodAttribute = NUnit.Framework.TestAttribute;
+    using ClassInitializeAttribute = NUnit.Framework.OneTimeSetUpAttribute;
+    using ClassCleanupAttribute = NUnit.Framework.OneTimeTearDownAttribute;
+    using TestCategoryAttribute = NUnit.Framework.CategoryAttribute;
+    using IgnoreAttribute = MSTestIgnoreAttribute;
+#endif
     using Moq;
 
     [TestClass]
@@ -36,7 +47,9 @@ namespace Microsoft.Azure.Devices.Client.Test
             // Success
         }
 
+#if !NUNIT
         [ExpectedException(typeof(InvalidOperationException))]
+#endif
         [TestMethod]
         [TestCategory("CIT")]
         [TestCategory("ConnectionPool")]
@@ -55,7 +68,13 @@ namespace Microsoft.Azure.Devices.Client.Test
             var connection = connectionCache.Object.GetConnection(iotHubConnectionString, amqpTransportSettings);
 
             // throw exception if you release a device that is not in the pool
+#if NUNIT
+            Assert.Throws<InvalidOperationException>(() => {
+#endif 
             connection.Release("device2");
+#if NUNIT
+            });
+#endif
         }
 
         [TestMethod]
@@ -80,7 +99,9 @@ namespace Microsoft.Azure.Devices.Client.Test
             // Success - Device1 was in the pool and released
         }
 
+#if !NUNIT
         [ExpectedException(typeof(InvalidOperationException))]
+#endif
         [TestMethod]
         [TestCategory("CIT")]
         [TestCategory("ConnectionPool")]
@@ -106,7 +127,13 @@ namespace Microsoft.Azure.Devices.Client.Test
             }
 
             // try one more. This should throw invalid operation exception
+#if NUNIT
+            Assert.Throws<InvalidOperationException>(() => {
+#endif 
             var connection = connectionPool.GetConnection(iotHubConnectionString + "DeviceId=" + Guid.NewGuid().ToString());
+#if NUNIT
+            });
+#endif
         }
 
         [TestMethod]
@@ -173,7 +200,9 @@ namespace Microsoft.Azure.Devices.Client.Test
         [TestMethod]
         [TestCategory("CIT")]
         [TestCategory("ConnectionPool")]
+#if !NUNIT
         [ExpectedException(typeof(ObjectDisposedException))]
+#endif
         public async Task HubScopeMuxConnection_ConnectionIdleTimeoutTest()
         {
             // Arrange
@@ -207,7 +236,13 @@ namespace Microsoft.Azure.Devices.Client.Test
 
             // Hacky way to verify that the SingleTokenConnection object has been closed.
             var singleConnection = (IotHubSingleTokenConnection)hubscopeConnectionPool.Connection;
+#if NUNIT
+            Assert.ThrowsAsync<ObjectDisposedException>(async () => {
+#endif 
             await singleConnection.CreateSendingLinkAsync("test", iotHubConnectionString, TimeSpan.FromMinutes(2), CancellationToken.None);
+#if NUNIT
+            } );
+#endif
         }
     }
 }
